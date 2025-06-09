@@ -157,17 +157,17 @@ int main(int argc, char const* argv[])
         auto const* key_event = mir_input_event_get_keyboard_event(input_event);
         auto const modifiers = mir_keyboard_event_modifiers(key_event);
 
-        if ((modifiers & mir_input_event_modifier_ctrl) &&
-            (modifiers & mir_input_event_modifier_shift) &&
-            mir_keyboard_event_keysym(key_event) == XKB_KEY_m &&
-            mir_keyboard_event_action(key_event) == mir_keyboard_action_down)
+        if ((modifiers & mir_input_event_modifier_ctrl) && (modifiers & mir_input_event_modifier_shift) &&
+            (modifiers & mir_input_event_modifier_meta))
         {
+            printf("PRESSEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD\n");
+
+            if (mir_keyboard_event_action(key_event) == mir_keyboard_action_down ||
+                mir_keyboard_event_action(key_event) == mir_keyboard_action_repeat)
+                return true;
+
             mousekeys_on = !mousekeys_on;
             mousekeys_config.enabled(mousekeys_on);
-
-            std::cout << "[LOG] Ctrl+Shift+M pressed: MouseKeys "
-                    << (mousekeys_on ? "enabled" : "disabled") << std::endl;
-
             return true;
         }
 
